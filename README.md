@@ -1,6 +1,6 @@
  [ For English](#English) - | --- | - [ Для Русских](#Русский)
 
-[Technical support]("mailto:voidemptiness63@gmail.com") - [Тех.Подержка]("mailto:voidemptiness63@gmail.com")
+[Technical support](mailto:voidemptiness63@gmail.com) - [Тех.Подержка](mailto:voidemptiness63@gmail.com)
 
 ## English
 
