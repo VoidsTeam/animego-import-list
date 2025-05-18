@@ -1,7 +1,7 @@
  [ For English](#English) - | --- | - [ Для Русских](#Русский)
 
-## en - Need help? Contact the technical support of "VoidTeam"
-## ru - Нужна помощь? Свяжитесь с технической поддержкой "VoidTeam"
+en - Need help? Contact the technical support of "VoidTeam"
+ru - Нужна помощь? Свяжитесь с технической поддержкой "VoidTeam"
 
 ## English
 
