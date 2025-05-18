@@ -1,7 +1,6 @@
  [ For English](#English) - | --- | - [ Для Русских](#Русский)
 
-en - Need help? Contact the technical support of "VoidTeam"
-ru - Нужна помощь? Свяжитесь с технической поддержкой "VoidTeam"
+[Technical support]("voidemptiness63@gmail.com") - [Тех.Подержка]("voidemptiness63@gmail.com")
 
 ## English
 
