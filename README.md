@@ -1,4 +1,6 @@
-  [English](#English)  [Русский](#Русский)
+ [ For English](#English) - | --- | - [ Для Русских](#Русский)
+
+
 
 ## English
 
