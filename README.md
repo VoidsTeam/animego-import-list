@@ -1,6 +1,7 @@
  [ For English](#English) - | --- | - [ Для Русских](#Русский)
 
-## en - Need help? Contact the technical support of "VoidTeam" - ru Нужна помощь? Свяжитесь с технической поддержкой "VoidTeam"
+## en - Need help? Contact the technical support of "VoidTeam"
+## ru - Нужна помощь? Свяжитесь с технической поддержкой "VoidTeam"
 
 ## English
 
@@ -63,7 +64,8 @@ python anime_converter.py
 - Delays between Shikimori API requests to avoid rate limits
 - Alternative anime search when exact matches are not found
 - Correct handling of various data formats 
-                                            Readme is written using AI
+
+Readme is written using AI
 
 ---
 
@@ -128,4 +130,5 @@ python anime_converter.py
 - Задержки между запросами к API Shikimori во избежание превышения лимитов
 - Альтернативный поиск аниме при отсутствии точных совпадений
 - Корректная обработка различных форматов данных
-                                            Readme написан с помощью ии
+
+Readme написан с помощью ии
