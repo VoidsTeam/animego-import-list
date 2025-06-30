@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 SHIKIMORI_API = "https://shikimori.one/api/animes"
-RATE_LIMIT = 5
+RATE_LIMIT = 2
 
 class AnimeCache:
     def __init__(self, cache_file: str = 'anime_id_cache.json'):
@@ -37,38 +37,46 @@ class AnimeCache:
 
     def set(self, title: str, anime_id: Optional[int]):
         self.cache[title] = anime_id
-        if len(self.cache) % 10 == 0:
+        if len(self.cache) % 50 == 0:
             self.save_cache()
 
 class ShikimoriAPI:
-    def __init__(self):
-        self.session = None
-        self.last_request_time = 0
+    def __init__(self, pool_size=3):
+        self.sessions = []
+        self.last_request_times = []
+        self.pool_size = pool_size
+        self.current_session = 0
 
     async def init_session(self):
-        if not self.session:
-            self.session = aiohttp.ClientSession(headers={
-                'User-Agent': 'AnimeListConverter/2.0',
-                'Accept': 'application/json'
-            })
+        if not self.sessions:
+            for _ in range(self.pool_size):
+                session = aiohttp.ClientSession(headers={
+                    'User-Agent': 'AnimeListConverter/2.0',
+                    'Accept': 'application/json'
+                })
+                self.sessions.append(session)
+                self.last_request_times.append(0)
 
     async def close_session(self):
-        if self.session:
-            await self.session.close()
-            self.session = None
+        for session in self.sessions:
+            await session.close()
+        self.sessions = []
 
     async def search_anime(self, title: str) -> Optional[int]:
         await self.init_session()
 
+        session_idx = self.current_session
+        self.current_session = (self.current_session + 1) % self.pool_size
+        
         current_time = time.time()
-        time_since_last = current_time - self.last_request_time
+        time_since_last = current_time - self.last_request_times[session_idx]
         if time_since_last < RATE_LIMIT:
             await asyncio.sleep(RATE_LIMIT - time_since_last)
         
         try:
             params = {'search': title, 'limit': 1}
-            async with self.session.get(SHIKIMORI_API, params=params) as response:
-                self.last_request_time = time.time()
+            async with self.sessions[session_idx].get(SHIKIMORI_API, params=params) as response:
+                self.last_request_times[session_idx] = time.time()
                 
                 if response.status == 429:
                     logger.warning("Rate limit hit, waiting 60 seconds...")
@@ -90,15 +98,15 @@ async def update_anime_ids(json_file: str):
     logger.info("Starting ID update process...")
     
     cache = AnimeCache()
-    api = ShikimoriAPI()
+    api = ShikimoriAPI(pool_size=3)
     
     with open(json_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
-    updated = 0
     total = len(data)
+    updated = 0
     
-    for item in data:
+    for i, item in enumerate(data):
         if item['target_id'] == 0:
             title = item['target_title_eng']
             if title not in cache.cache:
@@ -107,10 +115,9 @@ async def update_anime_ids(json_file: str):
                     item['target_id'] = anime_id
                     cache.set(title, anime_id)
                     updated += 1
-                    logger.info(f"Processed {updated}/{total}: Found ID {anime_id} for {title}")
+                    logger.info(f"Processed {i + 1}/{total}: Found ID {anime_id} for {title}")
                 else:
                     logger.info(f"ID not found for {title}")
-                await asyncio.sleep(RATE_LIMIT)
             else:
                 anime_id = cache.get(title)
                 if anime_id:
