@@ -6,38 +6,38 @@ from bs4 import BeautifulSoup
 from shikimori_api import update_anime_ids
 
 def parse_anime_list(html_file):
-    """Парсинг списка аниме из HTML файла"""
-    print("Парсинг HTML файла...")
+    """Parsing anime list from HTML file"""
+    print("Parsing HTML file...")
     
     with open(html_file, 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'html.parser')
     
-    print("Парсинг HTML файла...")
+    print("Parsing HTML file...")
     anime_list = []
     table = soup.find('table')
     
     if not table:
-        print("Таблица не найдена")
+        print("Table not found")
         return []
 
     tbody = table.find('tbody')
     if not tbody:
-        print("Тело таблицы не найдено")
+        print("Table body not found")
         return []
 
     first_row = tbody.find('tr')
     if first_row:
-        print("\nПервая строка данных:")
+        print("\nFirst data row:")
         print(first_row.prettify())
         
         tds = first_row.find_all('td')
-        print("\nАнализ ячеек первой строки данных:")
+        print("\nAnalyzing first row cells:")
         for i, td in enumerate(tds):
-            print(f"\nЯчейка {i}:")
+            print(f"\nCell {i}:")
             print(td.prettify())
 
     rows = tbody.find_all('tr')
-    print(f"\nНайдено {len(rows)} строк с данными")
+    print(f"\nFound {len(rows)} rows with data")
 
     for row in rows:
         try:
@@ -61,7 +61,7 @@ def parse_anime_list(html_file):
                     type_col = cols[5].get_text(strip=True)
                     score = cols[3].get_text(strip=True)
 
-                    print(f"Найдено аниме: {russian_name} / {english_name}")
+                    print(f"Found anime: {russian_name} / {english_name}")
                     
                     anime_list.append({
                         'russian_name': russian_name,
@@ -72,14 +72,14 @@ def parse_anime_list(html_file):
                         'score': score if score != '–' else '0'
                     })
         except Exception as e:
-            print(f"Ошибка при обработке строки: {str(e)}")
+            print(f"Error processing row: {str(e)}")
             continue
     
     return anime_list
 
 def save_to_csv(anime_list, csv_file):
-    """Сохранение списка аниме в CSV файл"""
-    print("Сохранение в CSV...")
+    """Saving anime list to CSV file"""
+    print("Saving to CSV...")
     
     with open(csv_file, 'w', encoding='utf-8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=['russian_name', 'english_name', 'status', 'score', 'episodes', 'type'])
@@ -87,8 +87,8 @@ def save_to_csv(anime_list, csv_file):
         writer.writerows(anime_list)
 
 def convert_to_shikimori(csv_file):
-    """Конвертация CSV в формат Shikimori"""
-    print("Конвертация в формат Shikimori...")
+    """Converting CSV to Shikimori format"""
+    print("Converting to Shikimori format...")
     
     shikimori_list = []
     
@@ -143,7 +143,7 @@ async def main():
     csv_file = 'anime_list.csv'
 
     if not os.path.exists(html_file):
-        print(f"Ошибка: файл {html_file} не найден")
+        print(f"Error: file {html_file} not found")
         return
 
     anime_list = parse_anime_list(html_file)
@@ -154,7 +154,7 @@ async def main():
 
     await update_anime_ids(json_file)
     
-    print("\nКонвертация завершена! Файл shikimori_import.json готов к импорту.")
+    print("\nConversion completed! File shikimori_import.json is ready for import.")
 
 if __name__ == "__main__":
     asyncio.run(main())
