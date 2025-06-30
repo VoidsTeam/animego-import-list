@@ -1,8 +1,10 @@
- [ For English](#English) - | --- | - [ Для Русских](#Русский)
+[For English](#English) - | --- | - [Для Русских](#Русский)
 
 [Technical support](mailto:voidemptiness63@gmail.com) - [Тех.Подержка](mailto:voidemptiness63@gmail.com)
 
 ## English
+
+The README was written with the help of AI. If you find any inconsistencies, write to technical support.
 
 # animego-import-list
 
@@ -11,11 +13,12 @@ A tool for importing anime lists from Animego.org to Shikimori.one. Convert and 
 ## Features
 
 - Parsing HTML file with anime list from Animego.org
-- Saving data to intermediate CSV file
+- Saving data to intermediate CSV file for verification
 - Converting to JSON format for Shikimori import
 - Automatic anime ID retrieval via Shikimori API
 - Correct mapping of watching statuses between platforms
 - Processing various anime types (TV, movies, OVA, etc.)
+- Error handling and detailed logging
 
 ## Requirements
 
@@ -28,7 +31,12 @@ A tool for importing anime lists from Animego.org to Shikimori.one. Convert and 
 
 ## Installation
 
-1. Clone the repository
+1. Clone the repository:
+```bash
+git clone https://github.com/VoidsTeam/animego-import-list.git
+cd animego-import-list
+```
+
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
@@ -36,39 +44,51 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Save your anime list page from Animego.org to `list-anime.html` file
-2. If you are importing a new anime list, delete the cache file `anime_id_cache.json` if it exists (this is important to avoid using cached IDs from previous imports)
+1. Export your anime list from Animego.org:
+   - Log in to your Animego.org account
+   - Go to your profile's anime list
+   - Save the entire page (Ctrl+S or ⌘+S) as HTML file
+   - Name the saved file as `list-anime.html`
+   - Place the file in the same directory as the script
+
+2. Prepare for conversion:
+   - If you are importing a new anime list, delete the cache file `anime_id_cache.json` if it exists
+   - This step is important to avoid using cached IDs from previous imports
+
 3. Run the script:
 ```bash
 python anime_converter.py
 ```
-4. After the script completes, `shikimori_import.json` file will be created, ready for import to Shikimori
 
-> **Important**: Always delete `anime_id_cache.json` before importing a different anime list to ensure correct ID matching
+4. Check the conversion:
+   - The script will create intermediate file `anime_list.csv` for verification
+   - The final result will be in `shikimori_import.json`
+   - Check the console output for any warnings or errors
+   - Verify that all anime titles are correctly listed in the CSV file
 
-## Conversion Process
+5. Import to Shikimori:
+   - Go to Shikimori.one
+   - Use the `shikimori_import.json` file for import
 
-1. Parse HTML file and extract anime information (titles, status, ratings, episode count)
-2. Save data to CSV file for possible intermediate verification
-3. Convert data to Shikimori format considering:
-   - Status mapping
-   - Correct episode count calculation
-   - Anime type conversion
-4. Get anime IDs via Shikimori API
-5. Save final JSON file
+> **Important Notes**: 
+> - Always delete `anime_id_cache.json` before importing a different anime list
+> - If you see any errors during conversion, check the console output for details
+> - The script creates backup files in case of conversion issues
 
-## Features
+## Troubleshooting
 
-- Automatic error handling during parsing
-- Delays between Shikimori API requests to avoid rate limits
-- Alternative anime search when exact matches are not found
-- Correct handling of various data formats 
-
-Readme is written using AI
+If you encounter issues:
+1. Make sure your `list-anime.html` file is valid and complete
+2. Check that all dependencies are installed correctly
+3. Look for error messages in the console output
+4. Verify the content of `anime_list.csv` for any missing or incorrect data
+5. Contact technical support if problems persist
 
 ---
 
-  ## Русский
+## Русский
+
+Readme был написан с помощью ИИ, если нашли несостыковки, напишите в техподдержку.
 
 # animego-import-list
 
@@ -77,11 +97,12 @@ Readme is written using AI
 ## Возможности
 
 - Парсинг HTML-файла со списком аниме с Animego.org
-- Сохранение данных в промежуточный CSV-файл
+- Сохранение данных в промежуточный CSV-файл для проверки
 - Конвертация в JSON-формат для импорта на Shikimori
 - Автоматическое получение ID аниме через API Shikimori
 - Корректное сопоставление статусов просмотра между платформами
 - Обработка различных типов аниме (ТВ, фильмы, OVA и т.д.)
+- Обработка ошибок и подробное логирование
 
 ## Требования
 
@@ -94,7 +115,12 @@ Readme is written using AI
 
 ## Установка
 
-1. Клонируйте репозиторий
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/VoidsTeam/animego-import-list.git
+cd animego-import-list
+```
+
 2. Установите зависимости:
 ```bash
 pip install -r requirements.txt
@@ -102,32 +128,42 @@ pip install -r requirements.txt
 
 ## Использование
 
-1. Сохраните страницу со своим списком аниме с Animego.org в файл `list-anime.html`
-2. Если вы импортируете новый список аниме, удалите файл кэша `anime_id_cache.json`, если он существует (это важно, чтобы избежать использования кэшированных ID от предыдущих импортов)
+1. Экспорт списка аниме с Animego.org:
+   - Войдите в свой аккаунт на Animego.org
+   - Перейдите в список аниме в своём профиле
+   - Сохраните всю страницу (Ctrl+S или ⌘+S) как HTML файл
+   - Назовите сохранённый файл `list-anime.html`
+   - Поместите файл в ту же папку, где находится скрипт
+
+2. Подготовка к конвертации:
+   - Если вы импортируете новый список аниме, удалите файл кэша `anime_id_cache.json`, если он существует
+   - Этот шаг важен, чтобы избежать использования кэшированных ID от предыдущих импортов
+
 3. Запустите скрипт:
 ```bash
 python anime_converter.py
 ```
-4. После завершения работы скрипта будет создан файл `shikimori_import.json`, готовый к импорту на Shikimori
 
-> **Важно**: Всегда удаляйте файл `anime_id_cache.json` перед импортом нового списка аниме, чтобы обеспечить корректное сопоставление ID
+4. Проверка конвертации:
+   - Скрипт создаст промежуточный файл `anime_list.csv` для проверки
+   - Финальный результат будет в `shikimori_import.json`
+   - Проверьте консольный вывод на наличие предупреждений или ошибок
+   - Убедитесь, что все названия аниме правильно указаны в CSV файле
 
-## Процесс конвертации
+5. Импорт на Shikimori:
+   - Перейдите на Shikimori.one
+   - Используйте файл `shikimori_import.json` для импорта
 
-1. Парсинг HTML-файла и извлечение информации об аниме (названия, статус, оценки, количество эпизодов)
-2. Сохранение данных в CSV-файл для возможности промежуточной проверки
-3. Конвертация данных в формат Shikimori с учетом:
-   - Сопоставления статусов
-   - Корректного подсчета просмотренных эпизодов
-   - Преобразования типов аниме
-4. Получение ID аниме через API Shikimori
-5. Сохранение финального JSON-файла
+> **Важные замечания**: 
+> - Всегда удаляйте `anime_id_cache.json` перед импортом нового списка аниме
+> - Если во время конвертации возникают ошибки, проверьте консольный вывод
+> - Скрипт создаёт резервные копии файлов на случай проблем с конвертацией
 
-## Особенности
+## Устранение проблем
 
-- Автоматическая обработка ошибок при парсинге
-- Задержки между запросами к API Shikimori во избежание превышения лимитов
-- Альтернативный поиск аниме при отсутствии точных совпадений
-- Корректная обработка различных форматов данных
-
-Readme написан с помощью ии
+Если возникли проблемы:
+1. Убедитесь, что файл `list-anime.html` валидный и полный
+2. Проверьте, что все зависимости установлены корректно
+3. Просмотрите сообщения об ошибках в консольном выводе
+4. Проверьте содержимое `anime_list.csv` на наличие пропущенных или некорректных данных
+5. Обратитесь в техподдержку, если проблемы сохраняются
